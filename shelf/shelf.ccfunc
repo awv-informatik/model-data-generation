@@ -10,7 +10,6 @@ IF !ISVOID(param.ft) THEN ft = param.ft; ELSE ft = 5; ENDIF
 @CommonAPI.Clear();
 part = @PartAPI_v1.newPart({ name: "Shelf" });
 
-
 wcsl = @PartAPI_v1.workCSys({ partId: part, name: "WCSL", offset: {length, 0, 0}});
 wcsld = @PartAPI_v1.workCSys({ partId: part, name: "WCSLD", offset: {length, depth, 0}});
 wcsd = @PartAPI_v1.workCSys({ partId: part, name: "WCSD", offset: {0, depth, 0}});
