@@ -15,6 +15,6 @@ foreach ($line in $csv) {
 
     # Save ofb
     $file = [URI]::EscapeDataString("$outDir/$name.ofb")
-    curl -sS "$api/BaseModeler_v1/save?file=$file" -d ""
+    curl -sS "$api/BaseModeler_v1/save?file=$file&format=ofb" -d ""
     Write-Host ""
 }

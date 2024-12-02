@@ -17,17 +17,17 @@ foreach ($line in $csv) {
 
     # Save ofb
     $file = [URI]::EscapeDataString("$outDir/$name.ofb")
-    curl -sS "$api/BaseModeler_v1/save?file=$file" -d ""
+    curl -sS "$api/BaseModeler_v1/save?file=$file&format=ofb" -d ""
     Write-Host ""
 
     # Save iwp
     $file = [URI]::EscapeDataString("$($outDir)/$($name)_binary.iwp")
     $iwp = [URI]::EscapeDataString("{`"binary`": 0 }")
-    curl -sS "$api/BaseModeler_v1/save?file=$file&iwp=$iwp" -d ""
+    curl -sS "$api/BaseModeler_v1/save?file=$file&format=iwp&iwp=$iwp" -d ""
     Write-Host ""
 
     # Save step
     $file = [URI]::EscapeDataString("$outDir/$name.stp")
-    curl -sS "$api/BaseModeler_v1/save?file=$file" -d ""
+    curl -sS "$api/BaseModeler_v1/save?file=$file&format=stp" -d ""
     Write-Host ""
 }

@@ -30,7 +30,7 @@ with open(csvpath, newline="") as csvfile:
 
             # Save ofb
             file = f"{outDir}/{name}.ofb"
-            url = f"{api}/BaseModeler_v1/save?file={file}"
+            url = f"{api}/BaseModeler_v1/save?file={file}&format=ofb"
             try:
                 req = session.post(url)
             except:
@@ -40,7 +40,7 @@ with open(csvpath, newline="") as csvfile:
             # Save iwp
             file = f"{outDir}/{name}_binary.iwp"
             iwp = "{\"binary\": 0 }"
-            url = f"{api}/BaseModeler_v1/save?file={file}&iwp={iwp}"
+            url = f"{api}/BaseModeler_v1/save?file={file}&format=iwp&iwp={iwp}"
             try:
                 req = session.post(url)
             except:

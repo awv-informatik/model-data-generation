@@ -44,3 +44,5 @@ res = @PartAPI_v1.boolean({ partId: part, type: 1, target: { id: res }, tools: [
 
 foot = @PartAPI_v1.box({ partId: part, references: [footWcs], length: footSize, height: footHeight, width: footSize });
 res = @PartAPI_v1.boolean({ partId: part, type: 0, target: { id: res }, tools: [{ id: foot}] });
+
+RETURN;
