@@ -10,24 +10,24 @@ foreach ($line in $csv) {
     New-Item -Path "$outDir" -ItemType Directory -Force
 
     # Run ccfunc
+    $body = Get-Content "./asm.ccfunc"
     $dir = [URI]::EscapeDataString("$inDir/")
     $url = "$api/Developer/Run?clear=1&height=$($line.height)&depth=$($line.depth)&length=$($line.length)&nShelves=$($line.nShelves)&col_file=$($line.col_file)&shelf_file=$($line.shelf_file)&dir=$dir"
-    curl $url --data-binary "@asm.ccfunc" --header "Content-Type: application/octet-stream" -sS
-    Write-Host ""
+    Invoke-RestMethod -Method POST -Uri "$url" -Body "$body" -ContentType application/octet-stream
 
     # Save ofb
     $file = [URI]::EscapeDataString("$outDir/$name.ofb")
-    curl -sS "$api/BaseModeler_v1/save?file=$file&format=ofb" -d ""
-    Write-Host ""
+    $url = "$api/BaseModeler_v1/save?file=$file&format=ofb"
+    Invoke-RestMethod -Method POST -Uri "$url"
 
     # Save iwp
     $file = [URI]::EscapeDataString("$($outDir)/$($name)_binary.iwp")
     $iwp = [URI]::EscapeDataString("{`"binary`": 0 }")
-    curl -sS "$api/BaseModeler_v1/save?file=$file&format=iwp&iwp=$iwp" -d ""
-    Write-Host ""
+    $url = "$api/BaseModeler_v1/save?file=$file&format=iwp&iwp=$iwp"
+    Invoke-RestMethod -Method POST -Uri "$url"
 
     # Save step
     $file = [URI]::EscapeDataString("$outDir/$name.stp")
-    curl -sS "$api/BaseModeler_v1/save?file=$file&format=stp" -d ""
-    Write-Host ""
+    $url = "$api/BaseModeler_v1/save?file=$file&format=stp"
+    Invoke-RestMethod -Method POST -Uri "$url"
 }

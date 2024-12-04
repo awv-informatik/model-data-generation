@@ -1,3 +1,4 @@
+$ProgressPreference = 'SilentlyContinue'
 New-Item -Path "../.out/shelf" -ItemType Directory -Force
 
 $api = "http://127.0.0.1:9094/api"
@@ -9,18 +10,18 @@ foreach ($line in $csv) {
     New-Item -Path $outDir -ItemType Directory -Force
 
     # Run ccfunc
+    $body = Get-Content "./shelf.ccfunc"
     $url = "$api/Developer/Run?clear=1&length=$($line.length)&depth=$($line.depth)&ft=$($line.ft)"
-    curl $url --data-binary "@shelf.ccfunc" --header "Content-Type: application/octet-stream" -sS
-    Write-Host ""
+    Invoke-RestMethod -Method POST -Uri "$url" -Body "$body" -ContentType application/octet-stream
 
     # Save ofb
     $file = [URI]::EscapeDataString("$outDir/$name.ofb")
-    curl -sS "$api/BaseModeler_v1/save?file=$file&format=ofb" -d ""
-    Write-Host ""
+    $url = "$api/BaseModeler_v1/save?file=$file&format=ofb"
+    Invoke-RestMethod -Method POST -Uri "$url"
 
     # Save iwp
     $file = [URI]::EscapeDataString("$($outDir)/$($name)_binary.iwp")
     $iwp = [URI]::EscapeDataString("{`"binary`": 0 }")
-    curl -sS "$api/BaseModeler_v1/save?file=$file&format=iwp&iwp=$iwp" -d ""
-    Write-Host ""
+    $url = "$api/BaseModeler_v1/save?file=$file&format=iwp&iwp=$iwp"
+    Invoke-RestMethod -Method POST -Uri "$url"
 }
