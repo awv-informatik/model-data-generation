@@ -11,11 +11,29 @@ notepad .classcad.appkey # Get a ClassCAD Key from https://beta0121.buerli.io/us
 ./classcad-cli.cmd hs
 ```
 
+### Ubuntu
+
+```sh
+sudo apt-get update
+sudo apt-get install -y libarchive-dev libgomp1 libglu1-mesa-dev ocl-icd-opencl-dev p7zip-full curl nano
+# Ubuntu 20 only!
+# sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+# sudo apt-get update
+# sudo apt-get install -y libstdc++6
+
+mkdir -p .classcad && cd .classcad
+curl https://awvstatic.com/classcad/preview/latest/install-linux-x64.sh | bash # For ARM64, use 'install-linux-arm64.sh'
+nano .classcad.appkey # Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to this file
+./classcad-cli.sh hs
+```
+
 ## Data Generation
 
 > Make sure ClassCAD is running!
 
 > All data will be generated to the `.out` folder.
+
+> Usage on Ubuntu requires [Installing PowerShell on Ubuntu](https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.4)
 
 Content of this repo
 
