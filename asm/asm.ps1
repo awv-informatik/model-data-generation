@@ -21,8 +21,8 @@ foreach ($line in $csv) {
     Invoke-RestMethod -Method POST -Uri "$url"
 
     # Save iwp
-    $file = [URI]::EscapeDataString("$($outDir)/$($name)_binary.iwp")
-    $iwp = [URI]::EscapeDataString("{`"binary`": 0 }")
+    $file = [URI]::EscapeDataString("$($outDir)/$($name).iwp")
+    $iwp = [URI]::EscapeDataString("{`"binary`": 1 }")
     $url = "$api/BaseModeler_v1/save?file=$file&format=iwp&iwp=$iwp"
     Invoke-RestMethod -Method POST -Uri "$url"
 

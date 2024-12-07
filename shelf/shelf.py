@@ -38,8 +38,8 @@ with open(csvpath, newline="") as csvfile:
                 continue
 
             # Save iwp
-            file = f"{outDir}/{name}_binary.iwp"
-            iwp = "{\"binary\": 0 }"
+            file = f"{outDir}/{name}.iwp"
+            iwp = "{\"binary\": 1 }"
             url = f"{api}/BaseModeler_v1/save?file={file}&format=iwp&iwp={iwp}"
             try:
                 req = session.post(url)
