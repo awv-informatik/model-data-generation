@@ -88,6 +88,12 @@ The ClassCAD process is now up and ready to receive requests.
 
 > Usage on Ubuntu requires [Installing PowerShell on Ubuntu](https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.4)
 
+> You might get an error regarding ExecutionPolicy. In order to be able to run PowerShell scripts, you have to change that policy. Open a PowerShell Window and run the following command to do so.
+>
+> `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+>
+> More Information can be found at: https://go.microsoft.com/fwlink/?LinkID=135170
+
 Open a PowerShell window, change the current working directory to the root of this repo and follow the instructions below.
 
 If you run the scripts below, they are going to create several output files. All these files will be generated to the `.out` folder.
@@ -134,4 +140,3 @@ cd asm
 or right click on `asm.ps1` and `Run with PowerShell` from menu (Windows only).
 
 Then have a look at the directory `.out/asm` to find the generated output files.
-
