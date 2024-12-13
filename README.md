@@ -25,12 +25,19 @@
 
 ### Windows
 
-Open a PowerShell or CMD window and follow the instructions.
+To install and run ClassCAD, open a PowerShell or CMD window and:
 
 ```sh
-mkdir -p .classcad && cd .classcad
-cmd /c curl https://awvstatic.com/classcad/preview/latest/install-windows-x64.cmd -o "install.cmd"; cmd /c install.cmd; cmd /c del install.cmd
-notepad .classcad.appkey # Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to this file
+git clone https://github.com/awv-informatik/model-data-generation
+cd model-data-generation
+mkdir -p .classcad
+cd .classcad
+cmd /c curl https://awvstatic.com/classcad/preview/latest/install-windows-x64.cmd -o "install.cmd"
+cmd /c install.cmd
+cmd /c del install.cmd
+
+# Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to .classcad.appkey
+notepad .classcad.appkey
 
 # To start a ClassCAD http server
 ./classcad-cli.cmd hs
@@ -46,7 +53,7 @@ The ClassCAD process is now up and ready to receive requests.
 
 ### Ubuntu
 
-Open a bash terminal and follow the instructions.
+To install and run ClassCAD, open a terminal and:
 
 ```sh
 sudo apt-get update
@@ -56,9 +63,12 @@ sudo apt-get install -y libarchive-dev libgomp1 libglu1-mesa-dev ocl-icd-opencl-
 # sudo apt-get update
 # sudo apt-get install -y libstdc++6
 
-mkdir -p .classcad && cd .classcad
+mkdir -p .classcad
+cd .classcad
 curl https://awvstatic.com/classcad/preview/latest/install-linux-x64.sh | bash # For ARM64, use 'install-linux-arm64.sh'
-nano .classcad.appkey # Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to this file
+
+# Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to .classcad.appkey
+nano .classcad.appkey
 
 # To start a ClassCAD http server
 ./classcad-cli.sh hs
@@ -86,35 +96,42 @@ If you run the scripts below, they are going to create several output files. All
 
 ### Column
 
-Execute `column.ps1` to generate the colums.
+To run the script that builds colums, open a PowerShell window
 
 ```sh
 cd column
 ./column.ps1
 ```
 
-Have a look at the directory `.out/column` to find the generated output files.
+or right click on `column.ps1` and `Run with PowerShell` from menu (Windows only).
+
+Then have a look at the directory `.out/column` to find the generated output files.
 
 ### Shelf
 
-Execute `shelf.ps1` to generate the shelfs.
+To run the script that builds shelfs, open a PowerShell window
 
 ```sh
 cd shelf
 ./shelf.ps1
 ```
 
-Have a look at the directory `.out/shelf` to find the generated output files.
+or right click on `shelf.ps1` and `Run with PowerShell` from menu (Windows only).
+
+Then have a look at the directory `.out/shelf` to find the generated output files.
 
 ### Rack assembly
 
 > Columns and shelfs has to be generated before. The rack assembly relies on those models.
 
-Execute `asm.ps1` to generate the rack assemblies.
+To run the script that builds rack assemblies, open a PowerShell window
 
 ```sh
 cd asm
 ./asm.ps1
 ```
 
-Have a look at the directory `.out/asm` to find the generated output files.
+or right click on `asm.ps1` and `Run with PowerShell` from menu (Windows only).
+
+Then have a look at the directory `.out/asm` to find the generated output files.
+
