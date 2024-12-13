@@ -1,41 +1,6 @@
 # Model Data Generation
 
-## ClassCAD Installation
-
-### Windows
-
-```sh
-mkdir -p .classcad && cd .classcad
-cmd /c curl https://awvstatic.com/classcad/preview/latest/install-windows-x64.cmd -o "install.cmd"; cmd /c install.cmd; cmd /c del install.cmd
-notepad .classcad.appkey # Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to this file
-./classcad-cli.cmd hs
-```
-
-### Ubuntu
-
-```sh
-sudo apt-get update
-sudo apt-get install -y libarchive-dev libgomp1 libglu1-mesa-dev ocl-icd-opencl-dev p7zip-full curl nano
-# Ubuntu 20 only!
-# sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-# sudo apt-get update
-# sudo apt-get install -y libstdc++6
-
-mkdir -p .classcad && cd .classcad
-curl https://awvstatic.com/classcad/preview/latest/install-linux-x64.sh | bash # For ARM64, use 'install-linux-arm64.sh'
-nano .classcad.appkey # Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to this file
-./classcad-cli.sh hs
-```
-
-## Data Generation
-
-> Make sure ClassCAD is running!
-
-> All data will be generated to the `.out` folder.
-
-> Usage on Ubuntu requires [Installing PowerShell on Ubuntu](https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.4)
-
-Content of this repo
+## Content of this repo
 
 ```txt
 ├── asm
@@ -56,6 +21,69 @@ Content of this repo
 │   └── shelf.py       - Just an example of the usage in python
 ```
 
+## ClassCAD Installation/Execution
+
+### Windows
+
+Open a PowerShell or CMD window and follow the instructions.
+
+```sh
+mkdir -p .classcad && cd .classcad
+cmd /c curl https://awvstatic.com/classcad/preview/latest/install-windows-x64.cmd -o "install.cmd"; cmd /c install.cmd; cmd /c del install.cmd
+notepad .classcad.appkey # Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to this file
+
+# To start a ClassCAD http server
+./classcad-cli.cmd hs
+```
+
+If everything worked you should see the following line in the console output.
+
+```sh
+HttpServer start listen on 0.0.0.0:9094
+```
+
+The ClassCAD process is now up and ready to receive requests.
+
+### Ubuntu
+
+Open a bash terminal and follow the instructions.
+
+```sh
+sudo apt-get update
+sudo apt-get install -y libarchive-dev libgomp1 libglu1-mesa-dev ocl-icd-opencl-dev p7zip-full curl nano
+# Ubuntu 20 only!
+# sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+# sudo apt-get update
+# sudo apt-get install -y libstdc++6
+
+mkdir -p .classcad && cd .classcad
+curl https://awvstatic.com/classcad/preview/latest/install-linux-x64.sh | bash # For ARM64, use 'install-linux-arm64.sh'
+nano .classcad.appkey # Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to this file
+
+# To start a ClassCAD http server
+./classcad-cli.sh hs
+```
+
+If everything worked you should see the following line in the console output.
+
+```sh
+HttpServer start listen on 0.0.0.0:9094
+```
+
+The ClassCAD process is now up and ready to receive requests.
+
+## Data Generation
+
+> Make sure ClassCAD is running!
+
+> Usage on Ubuntu requires [Installing PowerShell on Ubuntu](https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.4)
+
+Open a PowerShell window, change the current working directory to the root of this repo and follow the instructions below.
+
+If you run the scripts below, they are going to create several output files. All these files will be generated to the `.out` folder.
+
+![.out folder](folders.png)
+
 ### Column
 
 Execute `column.ps1` to generate the colums.
@@ -65,6 +93,8 @@ cd column
 ./column.ps1
 ```
 
+Have a look at the directory `.out/column` to find the generated output files.
+
 ### Shelf
 
 Execute `shelf.ps1` to generate the shelfs.
@@ -73,6 +103,8 @@ Execute `shelf.ps1` to generate the shelfs.
 cd shelf
 ./shelf.ps1
 ```
+
+Have a look at the directory `.out/shelf` to find the generated output files.
 
 ### Rack assembly
 
@@ -84,3 +116,5 @@ Execute `asm.ps1` to generate the rack assemblies.
 cd asm
 ./asm.ps1
 ```
+
+Have a look at the directory `.out/asm` to find the generated output files.
