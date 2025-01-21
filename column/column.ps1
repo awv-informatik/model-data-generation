@@ -9,13 +9,16 @@ foreach ($line in $csv) {
     $name = "$($line.height)-$($line.length)-$($line.depth)"
     New-Item -Path $outDir -ItemType Directory -Force
 
-    # Run ccfunc
-    $body = Get-Content "./column.ccfunc"
-    $url = "$api/Developer/Run?clear=1&height=$($line.height)&length=$($line.length)&depth=$($line.depth)"
-    Invoke-RestMethod -Method POST -Uri "$url" -Body "$body" -ContentType application/octet-stream
+    $url = "$api/v1/common/clear"
+    Invoke-RestMethod -Method POST -Uri "$url"
+
+    # Run ccscript
+    $file = [URI]::EscapeDataString("$PSScriptRoot/column.ccscript")
+    $url = "$api/v1/script/run?file=$file&height=$($line.height)&length=$($line.length)&depth=$($line.depth)"
+    Invoke-RestMethod -Method POST -Uri "$url"
 
     # Save ofb
     $file = [URI]::EscapeDataString("$outDir/$name.ofb")
-    $url = "$api/BaseModeler_v1/save?file=$file&format=ofb"
+    $url = "$api/v1/basemodeler/save?file=$file&format=ofb"
     Invoke-RestMethod -Method POST -Uri "$url"
 }

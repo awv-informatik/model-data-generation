@@ -4,21 +4,21 @@
 
 ```txt
 ├── asm
-│   ├── asc.ccfunc     - The ClassCAD code to build the rack assembly
-│   ├── asm.csv        - Parameter input table for the rack assembly
-│   └── asm.ps1        - Powershell script that iterates the parameter
-│                        table and calls ClassCAD to create the rack assembly
+│   ├── asc.ccscript    - The ClassCAD code to build the rack assembly
+│   ├── asm.csv         - Parameter input table for the rack assembly
+│   └── asm.ps1         - Powershell script that iterates the parameter
+│                         table and calls ClassCAD to create the rack assembly
 ├── column
-│   ├── column.ccfunc  - The ClassCAD code to build the column part
-│   ├── column.csv     - Parameter input table for the column part
-│   └── column.ps1     - Powershell script that iterates the parameter
-│                        table and calls ClassCAD to create the column part
+│   ├── column.ccscript - The ClassCAD code to build the column part
+│   ├── column.csv      - Parameter input table for the column part
+│   └── column.ps1      - Powershell script that iterates the parameter
+│                         table and calls ClassCAD to create the column part
 ├── shelf
-│   ├── shelf.ccfunc   - The ClassCAD code to build the shelf part
-│   ├── shelf.csv      - Parameter input table for the shelf part
-│   ├── shelf.ps1      - Powershell script that iterates the parameter
-│   │                    table and calls ClassCAD to create the shelf part
-│   └── shelf.py       - Just an example of the usage in python
+│   ├── shelf.ccscript  - The ClassCAD code to build the shelf part
+│   ├── shelf.csv       - Parameter input table for the shelf part
+│   ├── shelf.ps1       - Powershell script that iterates the parameter
+│   │                     table and calls ClassCAD to create the shelf part
+│   └── shelf.py        - Just an example of the usage in python
 ```
 
 ## ClassCAD Installation/Execution
@@ -32,7 +32,7 @@ git clone https://github.com/awv-informatik/model-data-generation
 cd model-data-generation
 mkdir -p .classcad
 cd .classcad
-cmd /c curl https://awvstatic.com/classcad/preview/latest/install-windows-x64.cmd -o "install.cmd"
+cmd /c curl https://awvstatic.com/classcad/download/dev/latest/install-windows-x64.cmd -o "install.cmd"
 cmd /c install.cmd
 cmd /c del install.cmd
 
@@ -65,7 +65,7 @@ sudo apt-get install -y libarchive-dev libgomp1 libglu1-mesa-dev ocl-icd-opencl-
 
 mkdir -p .classcad
 cd .classcad
-curl https://awvstatic.com/classcad/preview/latest/install-linux-x64.sh | bash # For ARM64, use 'install-linux-arm64.sh'
+curl https://awvstatic.com/classcad/download/dev/latest/install-linux-x64.sh | bash # For ARM64, use 'install-linux-arm64.sh'
 
 # Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to .classcad.appkey
 nano .classcad.appkey

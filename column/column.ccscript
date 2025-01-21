@@ -1,4 +1,4 @@
-PAR param, api;
+PAR param;
 VAR part, box, wcs0, wcs1, wcs2, b1, b2, wcs3, b3, res, lpb, workAxis,
     hole, holeL, holeH, holeCntH, holeAxis1, holeAxis2, holeWcs, mhz, mhx,
     foot, footSize, footHeight, footWcs,
@@ -11,18 +11,22 @@ IF !ISVOID(param.depth) THEN depth = param.depth; ELSE depth = 5; ENDIF
 IF !ISVOID(param.footSize) THEN footSize = param.footSize; ELSE footSize = length * 2; ENDIF
 IF !ISVOID(param.footHeight) THEN footHeight = param.footHeight; ELSE footHeight = depth; ENDIF
 
-@CommonAPI.Clear();
-part = @PartAPI_v1.newPart({ name: "Column" });
-wcs0 = @PartAPI_v1.workCSys({ partId: part, name: "WCS0", offset: { length, 0, footHeight } });
-wcs1 = @PartAPI_v1.workCSys({ partId: part, name: "WCS1", offset: { 0, 0, footHeight } });
-wcs2 = @PartAPI_v1.workCSys({ partId: part, name: "WCS2", offset: { depth, depth, footHeight } });
-wcs3 = @PartAPI_v1.workCSys({ partId: part, name: "WCS3", offset: { length / 4, length / 2, footHeight } });
-footWcs = @PartAPI_v1.workCSys({ partId: part, name: "FootWCS", offset: { -(footSize - length) / 2, -(footSize - length) / 2, 0 } });
+IF !ISVOID(param.part) THEN
+    part = param.part;
+ELSE
+    part = @api.v1.part.create({ name: "Column" });
+ENDIF
 
-b1 = @PartAPI_v1.box({ partId: part, references: [wcs1], length: length, height: height, width: length });
-b2 = @PartAPI_v1.box({ partId: part, references: [wcs2], length: length - 2 * depth, height: height, width: length - 2*depth });
-b3 = @PartAPI_v1.box({ partId: part, references: [wcs3], length: length / 2, height: height, width: length * 2 });
-res = @PartAPI_v1.boolean({ partId: part, type: 1, target: { id: b1 }, tools: [{ id: b2 }, { id: b3 }] });
+wcs0 = @api.v1.part.workCSys({ partId: part, name: "WCS0", offset: { length, 0, footHeight } });
+wcs1 = @api.v1.part.workCSys({ partId: part, name: "WCS1", offset: { 0, 0, footHeight } });
+wcs2 = @api.v1.part.workCSys({ partId: part, name: "WCS2", offset: { depth, depth, footHeight } });
+wcs3 = @api.v1.part.workCSys({ partId: part, name: "WCS3", offset: { length / 4, length / 2, footHeight } });
+footWcs = @api.v1.part.workCSys({ partId: part, name: "FootWCS", offset: { -(footSize - length) / 2, -(footSize - length) / 2, 0 } });
+
+b1 = @api.v1.part.box({ partId: part, references: [wcs1], length: length, height: height, width: length });
+b2 = @api.v1.part.box({ partId: part, references: [wcs2], length: length - 2 * depth, height: height, width: length - 2*depth });
+b3 = @api.v1.part.box({ partId: part, references: [wcs3], length: length / 2, height: height, width: length * 2 });
+res = @api.v1.part.boolean({ partId: part, type: "SUBTRACTION", target: { id: b1 }, tools: [{ id: b2 }, { id: b3 }] });
 
 mhx = 10;
 mhz = 20;
@@ -30,19 +34,19 @@ holeL = 15;
 holeH = 30;
 
 holeCntH = div(height, holeH * 2) - 1;
-holeWcs = @PartAPI_v1.workCSys({ partId: part, name: "HoleWCS", offset: { mhx, -1, mhz + footHeight }});
-holeAxis1 = @PartAPI_v1.workAxis({ partId: part, direction: { 1, 0, 0 } });
-holeAxis2 = @PartAPI_v1.workAxis({ partId: part, direction: { 0, 0, 1 } });
-hole = @PartAPI_v1.box({ partId: part, references: [holeWcs], length: holeL, height: holeH, width: depth + 2 });
+holeWcs = @api.v1.part.workCSys({ partId: part, name: "HoleWCS", offset: { mhx, -1, mhz + footHeight }});
+holeAxis1 = @api.v1.part.workAxis({ partId: part, direction: { 1, 0, 0 } });
+holeAxis2 = @api.v1.part.workAxis({ partId: part, direction: { 0, 0, 1 } });
+hole = @api.v1.part.box({ partId: part, references: [holeWcs], length: holeL, height: holeH, width: depth + 2 });
 
-lpb = @PartAPI_v1.linearPattern({
+lpb = @api.v1.part.linearPattern({
   partId: part, targets: [{ id: hole }],
-  references: [holeAxis1], firstDirParams: { count: 2, distance: length - 2*mhx  -holeL, merged: TRUE },
-  references2: [holeAxis2], secondDirParams: { count: holeCntH, distance: (height - 20) / holeCntH }
+  dir1: { references: [holeAxis1], count: 2, distance: length - 2*mhx  -holeL, merged: TRUE },
+  dir2: { references: [holeAxis2], count: holeCntH, distance: (height - 20) / holeCntH }
 });
-res = @PartAPI_v1.boolean({ partId: part, type: 1, target: { id: res }, tools: [{ id: lpb}] });
+res = @api.v1.part.boolean({ partId: part, type: "SUBTRACTION", target: { id: res }, tools: [{ id: lpb}] });
 
-foot = @PartAPI_v1.box({ partId: part, references: [footWcs], length: footSize, height: footHeight, width: footSize });
-res = @PartAPI_v1.boolean({ partId: part, type: 0, target: { id: res }, tools: [{ id: foot}] });
+foot = @api.v1.part.box({ partId: part, references: [footWcs], length: footSize, height: footHeight, width: footSize });
+res = @api.v1.part.boolean({ partId: part, type: "UNION", target: { id: res }, tools: [{ id: foot}] });
 
 RETURN;
