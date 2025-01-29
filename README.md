@@ -32,7 +32,7 @@ git clone https://github.com/awv-informatik/model-data-generation
 cd model-data-generation
 mkdir -p .classcad
 cd .classcad
-cmd /c curl https://awvstatic.com/classcad/download/dev/latest/install-windows-x64.cmd -o "install.cmd"
+cmd /c curl https://awvstatic.com/classcad/download/dev/17.1.3-dev.101/install-windows-x64.cmd -o "install.cmd"
 cmd /c install.cmd
 cmd /c del install.cmd
 
@@ -65,7 +65,7 @@ sudo apt-get install -y libarchive-dev libgomp1 libglu1-mesa-dev ocl-icd-opencl-
 
 mkdir -p .classcad
 cd .classcad
-curl https://awvstatic.com/classcad/download/dev/latest/install-linux-x64.sh | bash # For ARM64, use 'install-linux-arm64.sh'
+curl https://awvstatic.com/classcad/download/dev/17.1.3-dev.101/install-linux-x64.sh | bash # For ARM64, use 'install-linux-arm64.sh'
 
 # Get a ClassCAD Key from https://beta0121.buerli.io/user/profile and save it to .classcad.appkey
 nano .classcad.appkey

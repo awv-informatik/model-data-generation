@@ -10,6 +10,7 @@ IF !ISVOID(param.ft) THEN ft = param.ft; ELSE ft = 5; ENDIF
 IF !ISVOID(param.part) THEN
     part = param.part;
 ELSE
+    @api.v1.common.clear();
     part = @api.v1.part.create({ name: "Shelf" });
 ENDIF
 

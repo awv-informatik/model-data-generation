@@ -14,6 +14,7 @@ IF !ISVOID(param.footHeight) THEN footHeight = param.footHeight; ELSE footHeight
 IF !ISVOID(param.part) THEN
     part = param.part;
 ELSE
+    @api.v1.common.clear();
     part = @api.v1.part.create({ name: "Column" });
 ENDIF
 
