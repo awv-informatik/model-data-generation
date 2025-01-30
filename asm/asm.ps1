@@ -15,7 +15,7 @@ foreach ($line in $csv) {
     # Run ccscript
     $file = [URI]::EscapeDataString("$PSScriptRoot/asm.ccscript")
     $cwd = [URI]::EscapeDataString("$dir/")
-    $url = "$api/v1/script/run?file=$file&height=$($line.height)&nShelves=$($line.nShelves)&col_file=$($line.col_file)&shelf_file=$($line.shelf_file)&cwd=$cwd"
+    $url = "$api/v1/script/run?file=$file&height=$($line.height)&nShelves=$($line.nShelves)&cwd=$cwd"
     Invoke-RestMethod -Method POST -Uri "$url"
 
     # Save ofb
