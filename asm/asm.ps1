@@ -2,7 +2,7 @@ New-Item -Path "../.out/asm" -ItemType Directory -Force
 
 $api = "http://127.0.0.1:9094/api"
 $csv = Import-Csv -Path "./asm.csv"
-$inDir = (Resolve-Path "../.out").Path
+$dir = (Resolve-Path "./").Path
 $outDir = (Resolve-Path "../.out/asm").Path
 if (Test-Path -Path $outDir) { Remove-Item -Path $outDir -Recurse -Force }
 foreach ($line in $csv) {
@@ -14,8 +14,8 @@ foreach ($line in $csv) {
 
     # Run ccscript
     $file = [URI]::EscapeDataString("$PSScriptRoot/asm.ccscript")
-    $dir = [URI]::EscapeDataString("$inDir/")
-    $url = "$api/v1/script/run?file=$file&height=$($line.height)&nShelves=$($line.nShelves)&col_file=$($line.col_file)&shelf_file=$($line.shelf_file)&dir=$dir"
+    $cwd = [URI]::EscapeDataString("$dir/")
+    $url = "$api/v1/script/run?file=$file&height=$($line.height)&nShelves=$($line.nShelves)&col_file=$($line.col_file)&shelf_file=$($line.shelf_file)&cwd=$cwd"
     Invoke-RestMethod -Method POST -Uri "$url"
 
     # Save ofb
@@ -25,7 +25,7 @@ foreach ($line in $csv) {
 
     # Save iwp
     $file = [URI]::EscapeDataString("$($outDir)/$($name).iwp")
-    $iwp = [URI]::EscapeDataString("{`"binary`": 1 }")
+    $iwp = [URI]::EscapeDataString("{`"binary`": 0 }")
     $url = "$api/v1/basemodeler/save?file=$file&format=iwp&iwp=$iwp"
     Invoke-RestMethod -Method POST -Uri "$url"
 

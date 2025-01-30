@@ -1,26 +1,21 @@
 PAR param;
-VAR distance, res, root, column, shelf, wcs0Prt1, wcs1Prt1, wcsPrt2, wcsPrt2l, wcsPrt2ld, wcsPrt2d,
-    instances, foc, fc, fc1, fc2,fc3, height, depth, length, nShelves, col_file, shelf_file, i, z,
-    shelfInstances, path;
+VAR distance, root, column, shelf, wcs0Prt1, wcs1Prt1, wcsPrt2, wcsPrt2l, wcsPrt2ld, wcsPrt2d,
+    instances, foc, fc, fc1, fc2, fc3, height, nShelves, i, z, shelfInstances, cwd;
 
 IF ISVOID(param) THEN param = {}; ENDIF
 IF !ISVOID(param.height) THEN height = param.height; ELSE height = 2000; ENDIF
 IF !ISVOID(param.nShelves) THEN nShelves = param.nShelves; ELSE nShelves = 3; ENDIF
-IF !ISVOID(param.col_file) THEN col_file = param.col_file; ELSE col_file = "500-60-5.ofb"; ENDIF
-IF !ISVOID(param.shelf_file) THEN shelf_file = param.shelf_file; ELSE shelf_file = "100-200.ofb"; ENDIF
+IF !ISVOID(param.cwd) THEN cwd = param.cwd; ELSE cwd = "./"; ENDIF
 
 root = @api.v1.assembly.createRootAssembly();
-// column = @api.v1.assembly.createPartAsTemplate();
-// @api.v1.script.set({ name: "column", file: param.dir + "column/column.ccscript" });
-// @api.v1.script.run({ name: "column", part: column, height: 1500, length: 60, depth: 5 });
 
-path = param.dir + col_file;
-column = @api.v1.assembly.loadProduct({ file:  path});
-path = param.dir + shelf_file;
-shelf = @api.v1.assembly.loadProduct({ file: path});
+column = @api.v1.assembly.createPartAsTemplate();
+@api.v1.script.set({ name: "column", file: cwd + "../column/column.ccscript" });
+@api.v1.script.run({ name: "column", part: column, height: height, length: 60, depth: 5 });
 
-column = column.id;
-shelf = shelf.id;
+shelf = @api.v1.assembly.createPartAsTemplate();
+@api.v1.script.set({ name: "shelf", file: cwd + "../shelf/shelf.ccscript" });
+@api.v1.script.run({ name: "shelf", part: shelf, length: 2000, depth: 500, ft: 10 });
 
 instances = @api.v1.assembly.addInstance([
   { productId: column, ownerId: root },
