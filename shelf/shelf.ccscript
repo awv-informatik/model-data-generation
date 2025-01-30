@@ -1,4 +1,4 @@
-PAR param, api;
+PAR param;
 VAR part, wcs1, wcs2,  wcs3, wcs4, wcsl, wcsld, wcsd, b1, b2, b3, b4, b5,
     height, length, depth, ft;
 
