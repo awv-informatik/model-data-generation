@@ -2,10 +2,10 @@
 .classcad/
 classcad-*.*
 
+**/out/**
+**/.out/**
 classcad/
 logs/
-out/
-.out/
 .temp/
 .venv/
 .vscode/
