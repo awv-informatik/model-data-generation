@@ -1,0 +1,73 @@
+PAR param;
+VAR distance, root, column, shelf, wcs0Prt1, wcs1Prt1, wcsPrt2, wcsPrt2l, wcsPrt2ld, wcsPrt2d,
+    instances, foc, fc, fc1, fc2, fc3, height, nShelves, i, z, shelfInstances, cwd, shelfScr, columnScr;
+
+IF ISVOID(param) THEN param = {}; ENDIF
+IF !ISVOID(param.height) THEN height = param.height; ELSE height = 2000; ENDIF
+IF !ISVOID(param.nShelves) THEN nShelves = param.nShelves; ELSE nShelves = 3; ENDIF
+IF !ISVOID(param.cwd) THEN cwd = param.cwd; ELSE cwd = "./"; ENDIF
+shelfScr = cwd + "../shelf/shelf.ccscript";
+columnScr = cwd + "../column/column.ccscript";
+
+@api.v1.common.clear();
+root = @api.v1.assembly.createRootAssembly();
+column = @api.v1.assembly.createPartAsTemplate();
+shelf = @api.v1.assembly.createPartAsTemplate();
+
+@api.v1.script.run({ file: columnScr, part: column, height: height, length: 60, depth: 5 });
+@api.v1.script.run({ file: shelfScr, part: shelf, length: 750, depth: 500, ft: 10 });
+
+instances = @api.v1.assembly.addInstance([
+  { productId: column, ownerId: root },
+  { productId: column, ownerId: root },
+  { productId: column, ownerId: root },
+  { productId: column, ownerId: root }
+]);
+
+z = 40;
+distance = (height -2*z)/(nShelves-1);
+shelfInstances = [];
+FOR i = 0 TO nShelves -1 DO
+  CADH_InsArray(shelfInstances, -1, { productId: shelf, ownerId: root, transformation: [{0,0,z},{1,0,0}, {0,1,0}], name: "Shelf" + i });
+  z = z + distance;
+NEXT
+shelfInstances = @api.v1.assembly.addInstance(shelfInstances);
+
+wcs0Prt1 = @api.v1.part.getGeometryByName({id: column, name: "WCS0"} );
+wcs1Prt1 = @api.v1.part.getGeometryByName({id: column, name: "WCS1"} );
+
+wcsPrt2 = @api.v1.part.getGeometryByName({id: shelf, name: "WCS1"} );
+wcsPrt2l = @api.v1.part.getGeometryByName({id: shelf, name: "WCSL"} );
+wcsPrt2ld  = @api.v1.part.getGeometryByName({id: shelf, name: "WCSLD"} );
+wcsPrt2d  = @api.v1.part.getGeometryByName({id: shelf, name: "WCSD"} );
+
+foc = @api.v1.assembly.fastenedOriginConstraint({
+  assemblyId: root,
+  mate1: { matePath: [instances[0]], wcsId: wcs0Prt1 }
+});
+
+fc = @api.v1.assembly.fastenedConstraint({
+  assemblyId: root,
+  mate1: { matePath: [instances[0]], wcsId: wcs0Prt1 },
+  mate2: { matePath: [shelfInstances[0]], wcsId: wcsPrt2 }
+});
+
+fc1 = @api.v1.assembly.fastenedConstraint({
+  assemblyId: root,
+  mate1: { matePath: [instances[1]], wcsId: wcs1Prt1 },
+  mate2: { matePath: [shelfInstances[0]], wcsId: wcsPrt2l }
+});
+
+fc2 = @api.v1.assembly.fastenedConstraint({
+  assemblyId: root,
+  mate1: { matePath: [instances[2]], wcsId: wcs0Prt1 },
+  mate2: { matePath: [shelfInstances[0]], wcsId: wcsPrt2ld, reorientType: "180" }
+});
+
+fc3 = @api.v1.assembly.fastenedConstraint({
+  assemblyId: root,
+  mate1: { matePath: [instances[3]], wcsId: wcs1Prt1 },
+  mate2: { matePath: [shelfInstances[0]], wcsId: wcsPrt2d, reorientType: "180" }
+});
+
+RETURN;
