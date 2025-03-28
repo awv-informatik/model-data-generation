@@ -1,6 +1,6 @@
 PAR param;
 VAR distance, root, column, shelf, wcs0Prt1, wcs1Prt1, wcsPrt2, wcsPrt2l, wcsPrt2ld, wcsPrt2d,
-    instances, foc, fc, fc1, fc2, fc3, height, nShelves, i, z, shelfInstance, cwd, shelfScr, columnScr, temp;
+    instances, foc, fc, fc1, fc2, fc3, height, nShelves, i, z, shelfInstances, cwd, shelfScr, columnScr;
 
 IF ISVOID(param) THEN param = {}; ENDIF
 IF !ISVOID(param.height) THEN height = param.height; ELSE height = 2000; ENDIF
@@ -30,13 +30,13 @@ instances = instances.result;
 
 z = 40;
 distance = (height -2*z)/(nShelves-1);
+shelfInstances = [];
 FOR i = 0 TO nShelves -1 DO
-  temp = @api.v1.assembly.instance({ productId: shelf, ownerId: root, transformation: [{0,0,z},{1,0,0}, {0,1,0}], name: "Shelf" + i });
-  IF i = 0 THEN
-    shelfInstance = temp.result;
-  ENDIF
+  shelfInstances = shelfInstances + [{ productId: shelf, ownerId: root, transformation: [{0,0,z},{1,0,0}, {0,1,0}], name: "Shelf" + i }];
   z = z + distance;
 NEXT
+shelfInstances = @api.v1.assembly.instance(shelfInstances);
+shelfInstances = shelfInstances.result;
 
 wcs0Prt1 = @api.v1.part.getWorkGeometry({id: column, name: "WCS0"} );
 wcs0Prt1 = wcs0Prt1.result;
@@ -61,28 +61,28 @@ foc = foc.result;
 fc = @api.v1.assembly.fastened({
   id: root,
   mate1: { matePath: [instances[0]], wcsId: wcs0Prt1 },
-  mate2: { matePath: [shelfInstance], wcsId: wcsPrt2 }
+  mate2: { matePath: [shelfInstances[0]], wcsId: wcsPrt2 }
 });
 fc = fc.result;
 
 fc1 = @api.v1.assembly.fastened({
   id: root,
   mate1: { matePath: [instances[1]], wcsId: wcs1Prt1 },
-  mate2: { matePath: [shelfInstance], wcsId: wcsPrt2l }
+  mate2: { matePath: [shelfInstances[0]], wcsId: wcsPrt2l }
 });
 fc1 = fc1.result;
 
 fc2 = @api.v1.assembly.fastened({
   id: root,
   mate1: { matePath: [instances[2]], wcsId: wcs0Prt1 },
-  mate2: { matePath: [shelfInstance], wcsId: wcsPrt2ld, reorientType: "180" }
+  mate2: { matePath: [shelfInstances[0]], wcsId: wcsPrt2ld, reorientType: "180" }
 });
 fc2 = fc2.result;
 
 fc3 = @api.v1.assembly.fastened({
   id: root,
   mate1: { matePath: [instances[3]], wcsId: wcs1Prt1 },
-  mate2: { matePath: [shelfInstance], wcsId: wcsPrt2d, reorientType: "180" }
+  mate2: { matePath: [shelfInstances[0]], wcsId: wcsPrt2d, reorientType: "180" }
 });
 fc3 = fc3.result;
 
